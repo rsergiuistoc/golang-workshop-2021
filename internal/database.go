@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"github.com/rsergiuistoc/golang-workshop-2021/internal/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -12,6 +13,11 @@ func CreateDatabaseConn(c *Configuration) *gorm.DB {
 
 	db, err := gorm.Open(postgres.New(postgres.Config{DSN: dns}), &gorm.Config{})
 
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.AutoMigrate(&models.User{})
 	if err != nil {
 		panic(err)
 	}

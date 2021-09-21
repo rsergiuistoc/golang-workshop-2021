@@ -5,7 +5,8 @@ import (
 	"github.com/rsergiuistoc/golang-workshop-2021/internal/controllers"
 )
 
-// ApplyStatusRoutes attaches status endpoints: ping/metrics/health .
+// ApplyStatusRoutes attaches status endpoints: ping/metrics/health
+//to the root group.
 func ApplyStatusRoutes(r *gin.RouterGroup){
 
 	statusApi := r.Group("/status")

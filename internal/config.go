@@ -4,6 +4,8 @@ import "github.com/spf13/viper"
 
 // Configuration holds the configuration properties.
 type Configuration struct {
+	// Security
+	SecretKey 			string	`mapstructure:"SECRET_KEY"`
 
 	// Database config properties
 	DBHost 				string 	`mapstructure:"SERVICE_DATABASE_HOST"`

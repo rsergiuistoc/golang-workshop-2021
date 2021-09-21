@@ -11,13 +11,14 @@ import (
 func main(){
 
 	cfg := internal.InitConfiguration(".env", ".")
-	_ = internal.CreateDatabaseConn(cfg)
+	db := internal.CreateDatabaseConn(cfg)
 
 	router := gin.Default()
 
 	api := router.Group("/api")
 	{
 		routes.ApplyStatusRoutes(api)
+		routes.ApplyAuthenticationRoutes(api, db, cfg)
 	}
 
 	// Error Endpoints
