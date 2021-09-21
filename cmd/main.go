@@ -3,11 +3,15 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/rsergiuistoc/golang-workshop-2021/internal"
 	"github.com/rsergiuistoc/golang-workshop-2021/internal/routes"
 	"net/http"
 )
 
 func main(){
+
+	cfg := internal.InitConfiguration(".env", ".")
+	_ = internal.CreateDatabaseConn(cfg)
 
 	router := gin.Default()
 

@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:13.2-alpine
+    container_name: todo_service_database
+    environment:
+      - POSTGRES_USER=${POSTGRES_MASTER_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_MASTER_PASSWORD}
+      - SERVICE_DB_USER=${SERVICE_DATABASE_USER}
+      - SERVICE_DB_PASS=${SERVICE_DATABASE_PASSWORD}
+      - SERVICE_DB_NAME=${SERVICE_DATABASE_NAME}
+    ports:
+      - 5435:5432
+    volumes:
+      - ./scripts/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh

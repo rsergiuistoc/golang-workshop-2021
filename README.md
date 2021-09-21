@@ -15,7 +15,11 @@ Installing Gin web framework : `go get -u github.com/gin-gonic/gin` in the root 
 
 Installing Gorm ORM library for Golang : `go get -u gorm.io/gorm` in the root fo your project.
 
-### Routes and Controllers
+### Authentication and Authorization Models, Routes and Controllers
+
+### Todo Models, Routes and Controllers
+
+### CORS
 
 ### Local Deployment using docker-compose
 
