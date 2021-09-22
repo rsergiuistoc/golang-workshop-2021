@@ -2,12 +2,42 @@ package middlewares
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/rsergiuistoc/golang-workshop-2021/internal"
+	"github.com/rsergiuistoc/golang-workshop-2021/internal/jwt"
+	"net/http"
 	"strings"
 )
 
-func AuthorizeToken() gin.HandlerFunc {
+func AuthorizeToken(cfg *internal.Configuration) gin.HandlerFunc {
 
 	return func (c *gin.Context){
-		_ = strings.Split(c.Request.Header.Get("Authorization"), " ")
+		auth := strings.Split(c.GetHeader("Authorization"), " ")
+
+		if auth[0] != "Bearer"{
+			failedAuthentication("Invalid authorization header.", c)
+			return
+		}
+
+		if len(auth) == 1 {
+			failedAuthentication("Invalid bearer header. No credentials provided.", c)
+			return
+		}
+
+		if len(auth) > 2 {
+			failedAuthentication("Invalid bearer header. Credentials string should not contain spaces.", c)
+			return
+		}
+
+		token, err := jwt.ValidateToken(auth[1], cfg.SecretKey)
+
+		if err != nil{
+			c.AbortWithStatus(http.StatusUnauthorized)
+		}
+
+		if token != nil && !token.Valid {
+			c.AbortWithStatus(http.StatusUnauthorized)
+		}
+
+		c.Next()
 	}
 }

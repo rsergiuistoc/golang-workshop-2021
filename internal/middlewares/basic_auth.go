@@ -15,13 +15,13 @@ import (
 func BasicAuthentication(db *gorm.DB) gin.HandlerFunc{
 
 	return func (c *gin.Context){
-		auth := strings.Split(c.Request.Header.Get("Authorization"), " ")
+		auth := strings.Split(c.GetHeader("Authorization"), " ")
 		if auth[0] != "Basic"{
 			failedAuthentication("Invalid authorization header.", c)
 			return
 		}
 
-		if len(auth) == 1{
+		if len(auth) == 1 {
 			failedAuthentication("Invalid basic header. No credentials provided.", c)
 			return
 		}

@@ -14,6 +14,7 @@ type SingupRequestCommand struct {
 	FirstName	string 	`json:"first_name"`
 	LastName	string  `json:"last_name"`
 	Email		string 	`json:"email"`
+	Password 	string 	`json:"password"`
 }
 
 type AuthController struct{
@@ -53,6 +54,7 @@ func (a *AuthController)SingUp(c *gin.Context){
 		FirstName: data.FirstName,
 		LastName: data.LastName,
 		Email: data.Email,
+		Password: data.Password,
 	}
 
 	if result := a.db.Create(&user); result.Error != nil {
