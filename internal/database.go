@@ -17,7 +17,7 @@ func CreateDatabaseConn(c *Configuration) *gorm.DB {
 		panic(err)
 	}
 
-	err = db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(&models.User{}, &models.Todo{})
 	if err != nil {
 		panic(err)
 	}

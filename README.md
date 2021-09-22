@@ -3,7 +3,7 @@ Building Web RESTful Service using Golang/Gin/Gorm
 
 ## Building Steps
 
-### Standard Project Layout 
+### Standard Project Layout
 
 Init your first go module : `go mod init example.org/example-project`
 

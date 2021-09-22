@@ -19,6 +19,7 @@ func main(){
 	{
 		routes.ApplyStatusRoutes(api)
 		routes.ApplyAuthenticationRoutes(api, db, cfg)
+		routes.ApplyTodoRoutes(api, db, cfg)
 	}
 
 	// Error Endpoints

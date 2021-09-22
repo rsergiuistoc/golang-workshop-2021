@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	JWT "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/rsergiuistoc/golang-workshop-2021/internal"
 	"github.com/rsergiuistoc/golang-workshop-2021/internal/jwt"
@@ -32,12 +33,17 @@ func AuthorizeToken(cfg *internal.Configuration) gin.HandlerFunc {
 
 		if err != nil{
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 
 		if token != nil && !token.Valid {
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 
+		claims := token.Claims.(JWT.MapClaims)
+
+		c.Set("user", claims["user_id"])
 		c.Next()
 	}
 }
