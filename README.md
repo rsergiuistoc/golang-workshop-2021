@@ -22,3 +22,4 @@ Installing Gorm ORM library for Golang : `go get -u gorm.io/gorm` in the root fo
 ### Local Deployment using docker-compose
 
 ### API Interface documentation ( OpenAPI Version 3 ) 
+`swag init -g cmd/main.go --output api/`

@@ -17,6 +17,6 @@ func ApplyAuthenticationRoutes(r *gin.RouterGroup, d *gorm.DB, cfg *internal.Con
 	auth := r.Group("/auth")
 	{
 		auth.POST("/signin", middlewares.BasicAuthentication(d), controller.SignIn)
-		auth.POST("/signup", controller.SingUp)
+		auth.POST("/signup", controller.SignUp)
 	}
 }

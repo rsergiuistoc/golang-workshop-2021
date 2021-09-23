@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-type SingupRequestCommand struct {
+type SignupRequestCommand struct {
 
 	FirstName	string 	`json:"first_name"`
 	LastName	string  `json:"last_name"`
@@ -29,6 +29,13 @@ func NewAuthController(d *gorm.DB, cfg *internal.Configuration) *AuthController{
 	}
 }
 
+// SignIn godoc
+// @Summary Authenticates the User
+// @Tags Authentication
+// @Success 200 {string} Json Web Token
+// @Failure 401 {string} Invalid email or password
+// @Router /auth/signin [post]
+// @securityDefinitions.basic BasicAuth
 func (a *AuthController)SignIn(c *gin.Context){
 
 	user := c.MustGet("user").(*models.User)
@@ -39,9 +46,17 @@ func (a *AuthController)SignIn(c *gin.Context){
 	return
 }
 
-func (a *AuthController)SingUp(c *gin.Context){
+// SignUp  godoc
+// @Summary Registers the User
+// @Tags Authentication
+// @Accept json
+// @Param signup body SignupRequestCommand true "Signup data"
+// @Success 200 {string} Ok
+// @Failure 401 {string} Missing required fields
+// @Router /auth/signup [post]
+func (a *AuthController) SignUp(c *gin.Context){
 
-	var data SingupRequestCommand
+	var data SignupRequestCommand
 
 	err := c.ShouldBindJSON(&data)
 

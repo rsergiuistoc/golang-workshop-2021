@@ -18,6 +18,14 @@ func NewTodoController(d *gorm.DB) *TodoController{
 	}
 }
 
+// RetrieveTodo godoc
+// @Summary Retrieves a Todo item
+// @Tags Todo
+// @Produce json
+// @Param id path string true "Id"
+// @Success 200 {string} models.Todo
+// @Failure 404 {string} Not Found
+// @Router /todos/:id [get]
 func (t *TodoController) RetrieveTodo(c *gin.Context) {
 
 	id := c.Param("id")
@@ -32,6 +40,15 @@ func (t *TodoController) RetrieveTodo(c *gin.Context) {
 	c.JSON(http.StatusOK, todo)
 }
 
+// CreateTodo godoc
+// @Summary Creates a new Todo item
+// @Tags Todo
+// @Accept json
+// @Produce json
+// @Param todo body models.Todo true "Todo Update" data
+// @Success 200 {string} models.Todo
+// @Failure 401 {string} Missing required fields
+// @Router /todos/ [post]
 func (t *TodoController) CreateTodo(c *gin.Context) {
 
 	user := c.MustGet("user").(models.User)
@@ -58,11 +75,26 @@ func (t *TodoController) CreateTodo(c *gin.Context) {
 	c.JSON(http.StatusCreated, todo)
 }
 
+// ListTodos godoc
+// @Summary List all todos for the authenticated user.
+// @Tags Todo
+// @Success 200 {string} []models.Todo
+// @Router /todos/ [get]
 func (t *TodoController) ListTodos(c *gin.Context) {
 	user := c.MustGet("user").(models.User)
 	c.JSON(http.StatusOK, user.Todos)
 }
 
+// UpdateTodo godoc
+// @Summary Updates a Todo
+// @Tags Todo
+// @Accept json
+// @Produce json
+// @Param id path string true "Id"
+// @Param todo body models.Todo true "Todo Update" data
+// @Success 200 {string} models.Todo
+// @Failure 404 {string} Not Found
+// @Router /todos/:id [patch]
 func (t *TodoController) UpdateTodo(c *gin.Context) {
 	var todo models.Todo
 
@@ -90,6 +122,13 @@ func (t *TodoController) UpdateTodo(c *gin.Context) {
 	c.JSON(http.StatusOK, todo)
 }
 
+// DeleteTodo godoc
+// @Summary Updates a Todo
+// @Tags Todo
+// @Param id path string true "Id"
+// @Success 204 {string} Ok
+// @Failure 404 {string} Not Found
+// @Router /todos/:id [delete]
 func (t *TodoController) DeleteTodo(c *gin.Context) {
 
 	var todo models.Todo
