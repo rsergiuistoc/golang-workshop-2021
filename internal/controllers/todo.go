@@ -2,10 +2,8 @@ package controllers
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/rsergiuistoc/golang-workshop-2021/internal/models"
-	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"net/http"
 )
@@ -31,13 +29,12 @@ func (t *TodoController) RetrieveTodo(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, "Ok")
+	c.JSON(http.StatusOK, todo)
 }
 
 func (t *TodoController) CreateTodo(c *gin.Context) {
 
-	fmt.Printf("Before Set Map %v", c.Keys)
-	userId := c.MustGet("user").(string)
+	user := c.MustGet("user").(models.User)
 
 	var todo models.Todo
 
@@ -49,7 +46,7 @@ func (t *TodoController) CreateTodo(c *gin.Context) {
 		return
 	}
 
-	todo.UserID, _ = uuid.FromString(userId)
+	todo.UserID = user.ID
 
 	if err := t.db.Create(&todo).Error; err != nil{
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -62,23 +59,22 @@ func (t *TodoController) CreateTodo(c *gin.Context) {
 }
 
 func (t *TodoController) ListTodos(c *gin.Context) {
-
-	var todos []models.Todo
-
-	err := t.db.Find(&todos).Error
-	if err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
-		return
-	}
-
-	c.JSON(http.StatusOK, todos)
+	user := c.MustGet("user").(models.User)
+	c.JSON(http.StatusOK, user.Todos)
 }
 
 func (t *TodoController) UpdateTodo(c *gin.Context) {
 	var todo models.Todo
 
 	id := c.Param("id")
-	err := c.ShouldBindJSON(&todo)
+
+	err := t.db.Where("id = ?", id).First(&todo).Error
+	if errors.Is(err, gorm.ErrRecordNotFound){
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	err = c.ShouldBindJSON(&todo)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -86,13 +82,11 @@ func (t *TodoController) UpdateTodo(c *gin.Context) {
 		return
 	}
 
-	err = t.db.Where("id = ?", id).First(&todo).Error
-	if errors.Is(err, gorm.ErrRecordNotFound){
-		c.AbortWithStatus(http.StatusNotFound)
-		return
+	if err := t.db.Save(&todo).Error; err != nil{
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
 	}
-
-	t.db.Save(&todo)
 	c.JSON(http.StatusOK, todo)
 }
 

@@ -15,7 +15,7 @@ type User struct {
 	Email		string		`gorm:"size:254; not null;unique" json:"email" binding:"required"`
 	Password	string		`gorm:"size:128" json:"password" binding:"required"`
 
-	Todo		[]Todo		`gorm:"foreignkey:UserID;constraint:OnDelete:CASCADE" json:"todos"`
+	Todos		[]Todo		`gorm:"foreignkey:UserID;constraint:OnDelete:CASCADE" json:"todos"`
 }
 
 // Hash generates a hashed password from an plain text one

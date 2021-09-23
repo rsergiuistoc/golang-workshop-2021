@@ -29,12 +29,19 @@ func EncodeToken(id uuid.UUID, secret string) (string, error){
 }
 
 // ValidateToken validates incoming JWT token
-func ValidateToken(encodedToken, secret string) ( *jwt.Token, error) {
+func ValidateToken(encodedToken, secret string) (jwt.MapClaims , error) {
 
-	return jwt.Parse(encodedToken, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(encodedToken, func(token *jwt.Token) (interface{}, error) {
 		if _, valid := token.Method.(*jwt.SigningMethodHMAC); !valid {
 			return nil, fmt.Errorf("Invalid token", token.Header["alg"])
 		}
 		return []byte(secret), nil
 	})
+
+	if err != nil || !token.Valid{
+		return nil, err
+	}
+
+	return token.Claims.(jwt.MapClaims), nil
+
 }
