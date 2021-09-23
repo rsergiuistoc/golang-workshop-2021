@@ -19,8 +19,6 @@ Installing Gorm ORM library for Golang : `go get -u gorm.io/gorm` in the root fo
 
 ### Todo Models, Routes and Controllers
 
-### CORS
-
 ### Local Deployment using docker-compose
 
 ### API Interface documentation ( OpenAPI Version 3 ) 
